@@ -49,7 +49,7 @@ export type Order = {
   date: string;
   date_order?: string;
   pickupHour: string;
-  message: string;
+  message?: string;
   status: string;
   cakes: OrderCake[];
 };
@@ -62,6 +62,7 @@ export type TimeslotSQL = {
   time: string;        // '11 ~ 13時'
   limit_slots: number;
 };
+
 // export type Slot = {
 //   time: string;
 //   limit_slots: number; // alterado de "limit" para refletir o nome SQL
@@ -83,11 +84,6 @@ export type OptionType = {
   value: string;
   label: string;
   image?: string | null;
-};
-
-export type TimeOptionType = OptionType & {
-  id: number;
-  isDisabled?: boolean;
 };
 
 export type MyContainerProps = {

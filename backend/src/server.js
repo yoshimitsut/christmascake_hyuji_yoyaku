@@ -82,7 +82,7 @@ app.post('/api/reservar', async (req, res) => {
     for (const orderCake of newOrder.cakes) {
       // inserir na tabela order_cakes
       await conn.query(
-        'INSERT INTO order_cakes (order_id, cake_id, size, amount, message_cake) VALUES (?,?,?,?)',
+        'INSERT INTO order_cakes (order_id, cake_id, size, amount, message_cake) VALUES (?,?,?,?,?)',
         [orderId, orderCake.cake_id, orderCake.size, orderCake.amount, orderCake.message_cake]
       );
       
