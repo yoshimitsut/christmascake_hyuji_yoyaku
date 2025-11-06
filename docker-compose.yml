@@ -49,11 +49,11 @@ services:
       - LETSENCRYPT_HOST=${FRONTEND_DOMAIN}
       - VITE_API_URL=${BACKEND_DOMAIN}
     networks:
-      - hyuji_yoyaku-backend 
+      - hyuji_yoyaku-christmascake-backend
       - beurre_mou_proxy-tier 
 
 volumes:
-  hyuji_yoyaku_mysql_data:
+  hyuji_yoyaku_christmascake_mysql_data:
 
 networks:
   hyuji_yoyaku-christmascake-backend:
