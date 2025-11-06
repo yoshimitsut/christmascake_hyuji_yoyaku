@@ -1,35 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ListOrder from './pages/ListOrder';
+import OrderCake from './pages/OrderCake';
+import SalesOrder from './pages/SalesOrder';
+import Check from './pages/Check';
+import Hero from './pages/Hero';
+import CakeInformation from './pages/CakeInformations';
+import CakeInformationSize from './pages/CakeInformationsSize';
+import OrderCakeStore from './pages/OrderCakeStore';
+import StoreLogin from './pages/StoreLogin';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Hero />} />
+        <Route path="/cakeinformation" element={<CakeInformation />} />
+        <Route path="/cakeinformationsize" element={<CakeInformationSize />} />
+        <Route path="/order" element={<OrderCake />} />
+
+        <Route path="/orderstore" element={
+        <ProtectedRoute>
+          <OrderCakeStore />
+        </ProtectedRoute>
+        } />
+
+        <Route path="/list" element={
+          <ProtectedRoute>
+            <ListOrder />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/ordertable" element={
+          <ProtectedRoute>
+            <SalesOrder />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/store-login" element={<StoreLogin />} />
+        
+        <Route path="/order/check" element={<Check />} />
+      </Routes>
+
+    </Router>
+  );
 }
 
-export default App
+export default App;
