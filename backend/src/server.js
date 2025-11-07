@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const pool = require('../src/config/db');
+const pool = require('./config/db');
 require('dotenv').config();
 const { Resend } = require('resend');
 const QRCode = require('qrcode');
@@ -9,8 +9,8 @@ const nodemailer = require('nodemailer');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// const resend = new Resend(process.env.RESEND_API_KEY);
-const resend = new Resend("re_ecUCJmMg_9n5TprDshhvgTGMWrcf7NJdz");
+const resend = new Resend(process.env.RESEND_API_KEY);
+// const resend = new Resend("re_ecUCJmMg_9n5TprDshhvgTGMWrcf7NJdz");
 
 app.use(cors());
 app.use(express.json());
@@ -119,7 +119,7 @@ app.post('/api/reservar', async (req, res) => {
         <table style="width: 400px; margin-bottom: 20px; border-collapse: collapse; background: #f9f9f9; border-radius: 8px; overflow: hidden;">
           <tr>
             <td style="width: 120px; padding: 15px; vertical-align: top;">
-              <img src="https://yoyaku.beurre-mou.com/image/${cake.name.toLowerCase().replace(/\s+/g, '-')}.jpg" 
+              <img src="https://christmascake.h-yuji.com/image/${cake.name.toLowerCase().replace(/\s+/g, '-')}.jpg" 
                 alt="${cake.name}" 
                 width="100" 
                 style="border-radius: 6px; border: 1px solid #ddd;"
@@ -158,17 +158,18 @@ app.post('/api/reservar', async (req, res) => {
       <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin-top: 20px;">
         <p style="margin: 0; font-size: 14px;">上記の内容に相違がございましたら、お手数をお掛けしますが、</p>
         <p style="margin: 5px 0 0 0; font-size: 14px;">ご連絡をお願いいたします。</p>
-        <p style="margin: 10px 0 0 0;"><strong>パティスリーブール・ムー</strong></p>
-        <p style="margin: 5px 0;">open 11:00 - 19:00</p>
-        <p style="margin: 5px 0;">TEL: <a href="tel:080-9854-2849" style="color: #007bff; text-decoration: none;">080-9854-2849</a></p>
+        <p style="margin: 10px 0 0 0;"><strong>Patisserie H.Yuji</strong></p>
+        <p style="margin: 5px 0;">営業時間 10:00～19:00</p>
+        <p style="margin: 5px 0;">定休日 月曜日・火曜日（祝日の場合は、翌日に振替休日）</p>
+        <p style="margin: 5px 0;">TEL: <a href="tel:0989172011" style="color: #007bff; text-decoration: none;">098-917-2011</a></p>
       </div>
       <p style="text-align: center; margin-top: 20px; font-style: italic;">宜しくお願いいたします。</p>
     </div>
     `;
-    
+
     await resend.emails.send({
-      from: "パティスリーブール・ムー <order@yoyaku.beurre-mou.com>",
-      to: [newOrder.email, "beurre.mou.yoyaku@gmail.com"],
+      from: "Patisserie H.Yuji <onboarding@christmascake.h-yuji.com>",
+      to: [newOrder.email, "shimitsutanaka@gmail.com"],
       subject: `🎂 ご注文確認 - 受付番号 ${String(orderId).padStart(4,"0")}`,
       html: htmlContent,
       attachments: [{
@@ -211,9 +212,9 @@ app.put('/api/orders/:id_order', async (req, res) => {
     port: 587,
     secure: false,
     auth: {
-        user: "beurre.mou.yoyaku@gmail.com",
+        user: "h.yuji.christmascake@gmail.com",
         // user: "shimitsutanaka@gmail.com",
-        pass: "fqqjpmcjleidbzko"
+        pass: "dtnpcnlhsqhlsbst"
         // pass: "vmiepzoxltefekcr"
     }
   });
@@ -283,95 +284,6 @@ app.put('/api/orders/:id_order', async (req, res) => {
       }
     }
 
-    // Função para ajustar estoque baseado nas diferenças
-    // async function adjustStock(conn, oldCakes, newCakes) {
-    //   // console.log("=== INICIANDO AJUSTE DE ESTOQUE ===");
-      
-    //   // Criar mapas para facilitar a comparação
-    //   const oldCakeMap = new Map();
-    //   const newCakeMap = new Map();
-
-    //   // Preencher mapa de cakes antigos
-    //   oldCakes.forEach(cake => {
-    //     const key = `${cake.cake_id}-${cake.size}`;
-    //     // console.log(`PEDIDO ANTIGO: ${key} - Quantidade: ${cake.amount}`);
-    //     oldCakeMap.set(key, cake.amount);
-    //   });
-
-    //   // Preencher mapa de cakes novos
-    //   newCakes.forEach(cake => {
-    //     const key = `${cake.cake_id}-${cake.size}`;
-    //     // console.log(`PEDIDO NOVO: ${key} - Quantidade: ${cake.amount}`);
-    //     newCakeMap.set(key, cake.amount);
-    //   });
-
-    //   // console.log("=== PROCESSANDO DIFERENÇAS ===");
-
-    //   // 1. PRIMEIRO: Processar cakes que foram COMPLETAMENTE REMOVIDOS
-    //   for (const [key, oldAmount] of oldCakeMap) {
-    //     if (!newCakeMap.has(key)) {
-    //       const [cakeId, size] = key.split('-');
-    //       // console.log(`🔵 BOLO REMOVIDO: ${key} - Devolvendo estoque: ${oldAmount}`);
-          
-    //       // Devolver todo o estoque do cake removido
-    //       await conn.query(
-    //         'UPDATE cake_sizes SET stock = stock + ? WHERE cake_id = ? AND size = ?',
-    //         [oldAmount, cakeId, size]
-    //       );
-    //     }
-    //   }
-
-    //   // 2. SEGUNDO: Processar cakes que foram COMPLETAMENTE ADICIONADOS
-    //   for (const [key, newAmount] of newCakeMap) {
-    //     if (!oldCakeMap.has(key)) {
-    //       const [cakeId, size] = key.split('-');
-    //       // console.log(`🟢 NOVO BOLO ADICIONADO: ${key} - Removendo estoque: ${newAmount}`);
-          
-    //       // Remover estoque do novo cake adicionado
-    //       await conn.query(
-    //         'UPDATE cake_sizes SET stock = stock - ? WHERE cake_id = ? AND size = ?',
-    //         [newAmount, cakeId, size]
-    //       );
-    //     }
-    //   }
-
-    //   // 3. TERCEIRO: Processar cakes que foram MODIFICADOS (existem em ambos)
-    //   const allKeys = new Set([...oldCakeMap.keys(), ...newCakeMap.keys()]);
-
-    //   for (const key of allKeys) {
-    //     const [cakeId, size] = key.split('-');
-    //     const oldAmount = oldCakeMap.get(key) || 0;
-    //     const newAmount = newCakeMap.get(key) || 0;
-        
-    //     // Só processa se existir em AMBOS os mapas
-    //     if (oldCakeMap.has(key) && newCakeMap.has(key)) {
-    //       const difference = newAmount - oldAmount;
-
-    //       if (difference !== 0) {
-    //         if (difference > 0) {
-    //           // Aumentou a quantidade - diminuir estoque
-    //           // console.log(`📈 QUANTIDADE AUMENTOU: ${key} - Diferença: +${difference} (Antigo: ${oldAmount} → Novo: ${newAmount})`);
-    //           await conn.query(
-    //             'UPDATE cake_sizes SET stock = stock - ? WHERE cake_id = ? AND size = ?',
-    //             [difference, cakeId, size]
-    //           );
-    //         } else {
-    //           // Diminuiu a quantidade - aumentar estoque
-    //           // console.log(`📉 QUANTIDADE DIMINUIU: ${key} - Diferença: ${difference} (Antigo: ${oldAmount} → Novo: ${newAmount})`);
-    //           await conn.query(
-    //             'UPDATE cake_sizes SET stock = stock + ? WHERE cake_id = ? AND size = ?',
-    //             [Math.abs(difference), cakeId, size]
-    //           );
-    //         }
-    //       } else {
-    //         // console.log(`⚖️ QUANTIDADE IGUAL: ${key} - Quantidade: ${oldAmount}`);
-    //       }
-    //     }
-    //   }
-
-    //   // console.log("=== AJUSTE DE ESTOQUE CONCLUÍDO ===");
-    // }
-
     // 8. Gerar QR Code e enviar email
     const qrCodeBuffer = await QRCode.toBuffer(String(id_order).padStart(4, "0"), { type: 'png', width: 400 });
     const qrCodeContentId = 'qrcode_order_id';
@@ -383,7 +295,7 @@ app.put('/api/orders/:id_order', async (req, res) => {
         <table style="width: 400px; margin-bottom: 20px; border-collapse: collapse; background: #f9f9f9; border-radius: 8px; overflow: hidden;">
           <tr>
             <td style="width: 120px; padding: 15px; vertical-align: top;">
-              <img src="https://yoyaku.beurre-mou.com/image/${cake.name.toLowerCase().replace(/\s+/g, '-')}.jpg" 
+              <img src="https://christmascake.h-yuji.com/image/${cake.name.toLowerCase().replace(/\s+/g, '-')}.jpg" 
                 alt="${cake.name}" 
                 width="100" 
                 style="border-radius: 6px; border: 1px solid #ddd;"
@@ -409,8 +321,8 @@ app.put('/api/orders/:id_order', async (req, res) => {
     }, 0);
 
     const mailOptions = {
-        from: '"パティスリーブール・ムー" <beurre.mou.yoyaku@gmail.com>', 
-        to: email, 
+        from: '"Patisserie H.Yuji" <onboarding@christmascake.h-yuji.com>', 
+        to: [email, "shimitsutanaka@gmail.com"],
         subject: `🎂 ご注文内容変更のお知らせ - 受付番号 ${String(id_order).padStart(4, "0")}`,
         html: `
           <div style="border: 1px solid #ddd; padding: 20px; max-width: 400px; margin: 0 auto; font-family: Arial, sans-serif;">
@@ -440,9 +352,10 @@ app.put('/api/orders/:id_order', async (req, res) => {
             <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin-top: 20px;">
               <p style="margin: 0; font-size: 14px;">上記の内容に相違がございましたら、お手数をお掛けしますが、</p>
               <p style="margin: 5px 0 0 0; font-size: 14px;">ご連絡をお願いいたします。</p>
-              <p style="margin: 10px 0 0 0;"><strong>パティスリーブール・ムー</strong></p>
-              <p style="margin: 5px 0;">open 11:00 - 19:00</p>
-              <p style="margin: 5px 0;">TEL: <a href="tel:080-9854-2849" style="color: #007bff; text-decoration: none;">080-9854-2849</a></p>
+              <p style="margin: 10px 0 0 0;"><strong>Patisserie H.Yuji</strong></p>
+              <p style="margin: 5px 0;">営業時間 10:00～19:00</p>
+              <p style="margin: 5px 0;">定休日 月曜日・火曜日（祝日の場合は、翌日に振替休日）</p>
+              <p style="margin: 5px 0;">TEL: <a href="tel:0989172011" style="color: #007bff; text-decoration: none;">098-917-2011</a></p>
             </div>
             
             <p style="text-align: center; margin-top: 20px; font-style: italic;">宜しくお願いいたします。</p>
@@ -487,9 +400,9 @@ app.put('/api/reservar/:id_order', async (req, res) => {
     port: 587,
     secure: false,
     auth: {
-      user: "beurre.mou.yoyaku@gmail.com",
+      user: "h.yuji.christmascake@gmail.com",
       // user: "shimitsutanaka@gmail.com",
-        pass: "fqqjpmcjleidbzko"
+        pass: "dtnpcnlhsqhlsbst"
         // pass: "vmiepzoxltefekcr"
     }
   });
@@ -557,7 +470,7 @@ app.put('/api/reservar/:id_order', async (req, res) => {
         const formattedDate = formatDateJP(order.date);
 
         const mailOptions = {
-          from: '"パティスリーブール・ムー" <beurre.mou.yoyaku@gmail.com>',
+          from: '"Patisserie H.Yuji" <onboarding@christmascake.h-yuji.com>',
           to: order.email,
           subject: `ご注文のキャンセル完了 - 受付番号 ${String(id_order).padStart(4, "0")}`,
           html: `
@@ -601,9 +514,10 @@ app.put('/api/reservar/:id_order', async (req, res) => {
 
               <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center;">
                 <p style="margin: 0 0 10px 0; font-size: 14px; color: #666;">
-                  パティスリーブール・ムー<br>
-                  OPEN 11:00 - 19:00<br>
-                  TEL: <a href="tel:080-9854-2849" style="color: #007bff;">080-9854-2849</a>
+                  Patisserie H.Yuji<br>
+                  営業時間 10:00～19:00<br>
+                  定休日 月曜日・火曜日（祝日の場合は、翌日に振替休日）<br>
+                  TEL: <a href="tel:098-917-2011" style="color: #007bff;">098-917-2011</a>
                 </p>
                 <p style="margin: 0; font-size: 12px; color: #999;">
                   このメールは自動送信されています
@@ -627,32 +541,6 @@ app.put('/api/reservar/:id_order', async (req, res) => {
       for(const oc of orderCakes){
         await conn.query('UPDATE cake_sizes SET stock = stock - ? WHERE cake_id=? AND size=?', [oc.amount, oc.cake_id, oc.size]);
       }
-
-      // 📧 OPÇÃO: Também pode enviar email de reativação se quiser
-      // try {
-      //   const formattedDate = formatDateJP(order.date);
-        
-      //   const mailOptions = {
-      //     from: '"パティスリーブール・ムー" <shimitsutanaka@gmail.com>',
-      //     to: order.email,
-      //     subject: `✅ ご注文の再開 - 受付番号 ${String(id_order).padStart(4, "0")}`,
-      //     html: `
-      //       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-      //         <h2 style="color: #28a745; text-align: center;">✅ 注文が再開されました</h2>
-      //         <p>${order.first_name} ${order.last_name}様</p>
-      //         <p>受付番号 <strong>${String(id_order).padStart(4, "0")}</strong> の注文が再開されました。</p>
-      //         <p><strong>受取予定日：</strong> ${formattedDate}</p>
-      //         <p><strong>受取時間：</strong> ${order.pickupHour}</p>
-      //         <p>引き続きよろしくお願いいたします。</p>
-      //       </div>
-      //     `
-      //   };
-        
-      //   const info = await transporter.sendMail(mailOptions);
-      //   console.log("📧 Email de reativação enviado:", info.messageId);
-      // } catch (emailError) {
-      //   console.error("❌ Erro ao enviar email de reativação:", emailError);
-      // }
     }
 
     await conn.commit();
@@ -745,5 +633,79 @@ app.get('/api/list', async (req, res) => {
   }
 });
 
+// 🔹 EXCLUIR PEDIDO COMPLETO
+app.delete('/api/orders/:id_order', async (req, res) => {
+  const id_order = parseInt(req.params.id_order, 10);
+  const conn = await pool.getConnection();
+
+  try {
+    await conn.beginTransaction();
+
+    console.log(`🗑️ Iniciando exclusão do pedido ${id_order}`);
+
+    // 1. Verificar se o pedido existe
+    const [orderRows] = await conn.query('SELECT * FROM orders WHERE id_order = ?', [id_order]);
+    if (orderRows.length === 0) {
+      await conn.rollback();
+      return res.status(404).json({ 
+        success: false, 
+        error: 'Pedido não encontrado' 
+      });
+    }
+
+    const order = orderRows[0];
+
+    // 2. Buscar os bolos do pedido para restaurar estoque
+    const [orderCakes] = await conn.query('SELECT * FROM order_cakes WHERE order_id = ?', [id_order]);
+    
+    console.log(`📦 Restaurando estoque de ${orderCakes.length} bolos`);
+
+    // 3. Restaurar estoque dos bolos (se o pedido não estava cancelado)
+    if (order.status !== 'e') { // 'e' = cancelado
+      for (const oc of orderCakes) {
+        await conn.query(
+          'UPDATE cake_sizes SET stock = stock + ? WHERE cake_id = ? AND size = ?',
+          [oc.amount, oc.cake_id, oc.size]
+        );
+        console.log(`🔄 Estoque restaurado: ${oc.amount} unidades do bolo ${oc.cake_id} tamanho ${oc.size}`);
+      }
+    } else {
+      console.log('ℹ️ Pedido já estava cancelado, estoque mantido');
+    }
+
+    // 4. Excluir os bolos do pedido (primeiro por causa da foreign key)
+    const [deleteCakesResult] = await conn.query('DELETE FROM order_cakes WHERE order_id = ?', [id_order]);
+    console.log(`🍰 Bolos excluídos: ${deleteCakesResult.affectedRows}`);
+
+    // 5. Excluir o pedido
+    const [deleteOrderResult] = await conn.query('DELETE FROM orders WHERE id_order = ?', [id_order]);
+    console.log(`📋 Pedido excluído: ${deleteOrderResult.affectedRows}`);
+
+    if (deleteOrderResult.affectedRows === 0) {
+      throw new Error('Nenhum pedido foi excluído');
+    }
+
+    await conn.commit();
+    
+    console.log(`✅ Pedido ${id_order} excluído com sucesso`);
+    res.json({ 
+      success: true, 
+      message: 'Pedido excluído com sucesso',
+      deletedOrder: id_order,
+      restoredStock: orderCakes.length,
+      orderStatus: order.status
+    });
+
+  } catch (err) {
+    await conn.rollback();
+    console.error('❌ Erro ao excluir pedido:', err);
+    res.status(500).json({ 
+      success: false, 
+      error: err.message 
+    });
+  } finally {
+    conn.release();
+  }
+});
 
 app.listen(PORT, () => console.log(`Servidor rodando em http://localhost:${PORT}`));

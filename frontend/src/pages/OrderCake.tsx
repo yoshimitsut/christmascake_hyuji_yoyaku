@@ -376,8 +376,8 @@ export default function OrderCake() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-console.log("enviando------------")
-     const getLocalDateString = (date: Date | null): string => {
+    
+    const getLocalDateString = (date: Date | null): string => {
       if (!date) return "";
       
       const year = date.getFullYear();
@@ -411,8 +411,6 @@ console.log("enviando------------")
       })
     }; 
     
-     console.log("📤 Dados sendo enviados:", JSON.stringify(data, null, 2));
-  console.log("🔢 Número de cakes:", data.cakes.length);
     try {
       const res = await fetch(`${API_URL}/api/reservar`, {
         method: "POST",

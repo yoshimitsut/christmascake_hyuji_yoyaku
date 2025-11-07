@@ -350,6 +350,62 @@ ul {
   transition: opacity 0.3s;
 }
 
+/* Adicione no seu arquivo CSS */
+.btn-delete {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-left: 8px;
+  transition: background 0.3s ease;
+}
+
+.btn-delete:hover {
+  background: #c82333;
+}
+
+.btn-delete:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+.delete-confirmation {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 6px;
+  padding: 15px;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.delete-confirmation-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.confirm-delete {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancel-delete {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 /* RESPONSIVIDADE */
 @media (max-width: 768px) {
   .list-order-input {
