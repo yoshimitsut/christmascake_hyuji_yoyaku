@@ -24,6 +24,7 @@ app.use(express.json());
 // Teste de conexão
 app.get('/api/test', async (req, res) => {
   try {
+    console.log(EMAIL_CONFIG);
     const [rows] = await pool.query('SELECT NOW() AS `current_time`');
     res.json({ success: true, message: 'Conexão bem-sucedida!', data: rows });
   } catch (err) {
@@ -118,7 +119,7 @@ app.post('/api/reservar', async (req, res) => {
     <p>メッセージ: ${newOrder.message}</p>
 
     <h3 style="border-bottom: 2px solid #333; padding-bottom: 5px;">ご注文商品</h3>
-            
+    
     ${newOrder.cakes.map(cake => { 
       const cakeTotalPrice = (cake.price) * cake.amount;
 
@@ -175,8 +176,8 @@ app.post('/api/reservar', async (req, res) => {
     `;
 
     await resend.emails.send({
-      from: `"${EMAIL_CONFIG.fromName}" <${EMAIL_CONFIG.fromGmail}>`,
-      to: [newOrder.email, EMAIL_CONFIG.fromResend],
+      from: `"${EMAIL_CONFIG.fromName}" <${EMAIL_CONFIG.fromResend}>`,
+      to: [newOrder.email, "shimitsutanaka@gmail.com"],
       subject: `🎂 ご注文確認 - 受付番号 ${String(orderId).padStart(4,"0")}`,
       html: htmlContent,
       attachments: [{
