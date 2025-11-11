@@ -177,7 +177,11 @@ app.post('/api/reservar', async (req, res) => {
 
     await resend.emails.send({
       from: `"${EMAIL_CONFIG.fromName}" <${EMAIL_CONFIG.fromResend}>`,
-      to: [newOrder.email, "shimitsutanaka@gmail.com"],
+      to: [
+        newOrder.email, 
+        "shimitsutanaka@gmail.com"
+        // EMAIL_CONFIG.fromGmail,
+      ],
       subject: `🎂 ご注文確認 - 受付番号 ${String(orderId).padStart(4,"0")}`,
       html: htmlContent,
       attachments: [{
@@ -327,8 +331,12 @@ app.put('/api/orders/:id_order', async (req, res) => {
     }, 0);
 
     const mailOptions = {
-        from: getFromEmail(), 
-        to: [email, EMAIL_CONFIG.fromGmail],
+      from: `"Patisserie H.Yuji" <${EMAIL_CONFIG.fromResend}>`,
+          to: [
+            email, 
+            // EMAIL_CONFIG.fromGmail,
+            "shimitsutanaka@gmail.com"
+          ], 
         subject: `🎂 ご注文内容変更のお知らせ - 受付番号 ${String(id_order).padStart(4, "0")}`,
         html: `
           <div style="border: 1px solid #ddd; padding: 20px; max-width: 400px; margin: 0 auto; font-family: Arial, sans-serif;">
@@ -475,7 +483,11 @@ app.put('/api/reservar/:id_order', async (req, res) => {
 
         const mailOptions = {
           from: `"Patisserie H.Yuji" <${EMAIL_CONFIG.fromGmail}>`,
-          to: [order.email, EMAIL_CONFIG.fromGmail],
+          to: [
+            order.email, 
+            // EMAIL_CONFIG.fromGmail,
+            "shimitsutanaka@gmail.com"
+          ],
           subject: `ご注文のキャンセル完了 - 受付番号 ${String(id_order).padStart(4, "0")}`,
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0;">
