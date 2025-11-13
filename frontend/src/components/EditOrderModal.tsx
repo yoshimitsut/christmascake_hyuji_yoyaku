@@ -31,9 +31,36 @@ export default function EditOrderModal({ editingOrder, setEditingOrder, handleSa
     })()
     : null
   );
-  const allowedDates = [
-    new Date(2025, 11, 24), // 24 de Dezembro de 2025 (local)
-    new Date(2025, 11, 25), // 25 de Dezembro de 2025 (local)
+
+const allowedDates = [
+    new Date(2025, 11, 3),
+    new Date(2025, 11, 4),
+    new Date(2025, 11, 5),
+    new Date(2025, 11, 6),
+    new Date(2025, 11, 7),
+    // new Date(2025, 11, 8),
+    // new Date(2025, 11, 9),
+    new Date(2025, 11, 10),
+    new Date(2025, 11, 11),
+    new Date(2025, 11, 12),
+    new Date(2025, 11, 13),
+    new Date(2025, 11, 14),
+    // new Date(2025, 11, 15),
+    // new Date(2025, 11, 16),
+    new Date(2025, 11, 17),
+    new Date(2025, 11, 18),
+    new Date(2025, 11, 19),
+    new Date(2025, 11, 20),
+    new Date(2025, 11, 21),
+    // new Date(2025, 11, 22),
+    new Date(2025, 11, 23),
+    new Date(2025, 11, 24),
+    new Date(2025, 11, 25),
+    // new Date(2025, 11, 26),
+    // new Date(2025, 11, 27),
+    // new Date(2025, 11, 28),
+    // new Date(2025, 11, 29),
+    // new Date(2025, 11, 31),
   ];
 
 
