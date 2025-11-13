@@ -607,7 +607,7 @@ export default function ListOrder() {
                               onClick={() => setEditingOrder(order)}
                               style={{
                                 padding: "0.25rem 0.5rem",
-                                backgroundColor: "#007bff",
+                                backgroundColor: "rgb(223, 22, 22)",
                                 color: "white",
                                 border: "none",
                                 borderRadius: "4px",
@@ -672,7 +672,7 @@ export default function ListOrder() {
                   style={{
                     marginTop: "0.5rem",
                     padding: "0.5rem 1rem",
-                    backgroundColor: "#007bff",
+                    backgroundColor: "rgb(223, 22, 22)",
                     color: "white",
                     border: "none",
                     borderRadius: "4px",
