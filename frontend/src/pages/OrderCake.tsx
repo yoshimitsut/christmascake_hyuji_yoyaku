@@ -268,6 +268,15 @@ export default function OrderCake() {
     { day: 30, month: 11 },
   ];
 
+  
+// 11:00〜12:00
+// 12:00〜13:00
+// 13:00〜14:00
+// 14:00〜15:00
+// 15:00〜16:00
+// 16:00〜17:00
+// 17:00〜18:00
+// 18:00〜19:00
 
   const allowedDates = [
     // new Date(today.getFullYear(), 11, 1),
