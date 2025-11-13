@@ -255,16 +255,51 @@ export default function OrderCake() {
   const today = new Date();
   const blockDay = 3;
   const daysOff = [
-    { day: 12, month: 7 },
-    { day: 21, month: 8 },
+    { day: 1, month: 11 },
+    { day: 2, month: 11 },
+    { day: 8, month: 11 },
+    { day: 9, month: 11 },
+    { day: 15, month: 11 },
+    { day: 16, month: 11 },
+    { day: 22, month: 11 },
+    { day: 26, month: 11 },
+    { day: 27, month: 11 },
+    { day: 29, month: 11 },
+    { day: 30, month: 11 },
   ];
 
+
   const allowedDates = [
-    // new Date(today.getFullYear(), 11, 21),
+    // new Date(today.getFullYear(), 11, 1),
+    // new Date(today.getFullYear(), 11, 2),
+    new Date(today.getFullYear(), 11, 3),
+    new Date(today.getFullYear(), 11, 4),
+    new Date(today.getFullYear(), 11, 5),
+    new Date(today.getFullYear(), 11, 6),
+    new Date(today.getFullYear(), 11, 7),
+    // new Date(today.getFullYear(), 11, 8),
+    // new Date(today.getFullYear(), 11, 9),
+    new Date(today.getFullYear(), 11, 10),
+    new Date(today.getFullYear(), 11, 11),
+    new Date(today.getFullYear(), 11, 12),
+    new Date(today.getFullYear(), 11, 13),
+    new Date(today.getFullYear(), 11, 14),
+    // new Date(today.getFullYear(), 11, 15),
+    // new Date(today.getFullYear(), 11, 16),
+    new Date(today.getFullYear(), 11, 17),
+    new Date(today.getFullYear(), 11, 18),
+    new Date(today.getFullYear(), 11, 19),
+    new Date(today.getFullYear(), 11, 20),
+    new Date(today.getFullYear(), 11, 21),
     // new Date(today.getFullYear(), 11, 22),
-    // new Date(today.getFullYear(), 11, 23),
+    new Date(today.getFullYear(), 11, 23),
     new Date(today.getFullYear(), 11, 24),
     new Date(today.getFullYear(), 11, 25),
+    // new Date(today.getFullYear(), 11, 26),
+    // new Date(today.getFullYear(), 11, 27),
+    // new Date(today.getFullYear(), 11, 28),
+    // new Date(today.getFullYear(), 11, 29),
+    // new Date(today.getFullYear(), 11, 31),
   ];
 
   const generateSpecificDatesWithMonth = () => {
