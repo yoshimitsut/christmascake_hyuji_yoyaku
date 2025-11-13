@@ -12,9 +12,9 @@ const PORT = process.env.PORT || 3001;
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const EMAIL_CONFIG = {
-  fromName: process.env.EMAIL_FROM_NAME || "Patisserie H.Yuji",
-  fromResend: process.env.EMAIL_FROM_RESEND || "order@christmascake.h-yuji.com",
-  fromGmail: process.env.EMAIL_FROM_GMAIL || "h.yuji.christmascake@gmail.com",
+  fromName: process.env.EMAIL_FROM_NAME,
+  fromResend: process.env.EMAIL_FROM_RESEND,
+  fromGmail: process.env.EMAIL_FROM_GMAIL,
   gmailPass: process.env.EMAIL_PASS
 };
 
@@ -126,15 +126,15 @@ app.post('/api/reservar', async (req, res) => {
       return `
         <table style="width: 400px; margin-bottom: 20px; border-collapse: collapse; background: #f9f9f9; border-radius: 8px; overflow: hidden;">
           <tr>
-            <td style="width: 120px; padding: 15px; vertical-align: top;">
-              <img src="https://christmascake.h-yuji.com/image/${cake.name.toLowerCase().replace(/\s+/g, '-')}.jpg" 
+            <td style="width: 120px; padding: 15px 0px 15px 15px; vertical-align: top;">
+              <img src="${process.env.EMAIL_USER_SITE}/image/${cake.name.toLowerCase().replace(/\s+/g, '-')}.jpg" 
                 alt="${cake.name}" 
                 width="100" 
                 style="border-radius: 6px; border: 1px solid #ddd;"
                 onerror="this.style.display='none'">
             </td>
             
-            <td style="padding: 15px; vertical-align: top;">
+            <td style="padding: 15px 15px 15px 0px; vertical-align: top;">
               <h3 style="margin: 0 0 10px 0;">${cake.name}</h3>
               ${cake.size ? `<p style="margin: 5px 0;"><strong>サイズ:</strong> ${cake.size}</p>` : ''}
               <p style="margin: 5px 0;"><strong>個数:</strong> ${cake.amount}個</p>
@@ -179,8 +179,8 @@ app.post('/api/reservar', async (req, res) => {
       from: `"${EMAIL_CONFIG.fromName}" <${EMAIL_CONFIG.fromResend}>`,
       to: [
         newOrder.email, 
-        "shimitsutanaka@gmail.com"
-        // EMAIL_CONFIG.fromGmail,
+        // "shimitsutanaka@gmail.com"
+        EMAIL_CONFIG.fromGmail,
       ],
       subject: `🎂 ご注文確認 - 受付番号 ${String(orderId).padStart(4,"0")}`,
       html: htmlContent,
@@ -304,15 +304,15 @@ app.put('/api/orders/:id_order', async (req, res) => {
       return `
         <table style="width: 400px; margin-bottom: 20px; border-collapse: collapse; background: #f9f9f9; border-radius: 8px; overflow: hidden;">
           <tr>
-            <td style="width: 120px; padding: 15px; vertical-align: top;">
-              <img src="https://christmascake.h-yuji.com/image/${cake.name.toLowerCase().replace(/\s+/g, '-')}.jpg" 
+            <td style="width: 120px; padding: 15px 0px 15px 15px; vertical-align: top;">
+              <img src="${process.env.EMAIL_USER_SITE}/image/${cake.name.toLowerCase().replace(/\s+/g, '-')}.jpg" 
                 alt="${cake.name}" 
                 width="100" 
                 style="border-radius: 6px; border: 1px solid #ddd;"
                 onerror="this.style.display='none'">
             </td>
             
-            <td style="padding: 15px; vertical-align: top;">
+            <td style="padding: 15px 15px 15px 0px; vertical-align: top;">
               <h3 style="margin: 0 0 10px 0;">${cake.name}</h3>
               <p style="margin: 5px 0;"><strong>サイズ:</strong> ${cake.size}</p>
               <p style="margin: 5px 0;"><strong>個数:</strong> ${cake.amount}個</p>
@@ -334,8 +334,8 @@ app.put('/api/orders/:id_order', async (req, res) => {
       from: `"Patisserie H.Yuji" <${EMAIL_CONFIG.fromResend}>`,
           to: [
             email, 
-            // EMAIL_CONFIG.fromGmail,
-            "shimitsutanaka@gmail.com"
+            EMAIL_CONFIG.fromGmail,
+            // "shimitsutanaka@gmail.com"
           ], 
         subject: `🎂 ご注文内容変更のお知らせ - 受付番号 ${String(id_order).padStart(4, "0")}`,
         html: `
@@ -485,8 +485,8 @@ app.put('/api/reservar/:id_order', async (req, res) => {
           from: `"Patisserie H.Yuji" <${EMAIL_CONFIG.fromGmail}>`,
           to: [
             order.email, 
-            // EMAIL_CONFIG.fromGmail,
-            "shimitsutanaka@gmail.com"
+            EMAIL_CONFIG.fromGmail,
+            // "shimitsutanaka@gmail.com"
           ],
           subject: `ご注文のキャンセル完了 - 受付番号 ${String(id_order).padStart(4, "0")}`,
           html: `
