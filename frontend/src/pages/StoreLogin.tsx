@@ -9,7 +9,7 @@ export default function StoreLogin() {
   const location = useLocation();
 
   // 🧩 Lista de senhas válidas
-  const VALID_PASSWORDS = ['beurremou0301', 't123'];
+  const VALID_PASSWORDS = ['0318', 't123'];
 
   // Pedir senha sempre (sessionStorage)
   const handleLogin = (e: React.FormEvent) => {
