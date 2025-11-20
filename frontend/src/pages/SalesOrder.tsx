@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import "./SalesOrder.css";
-import type { Order } from "../types/types";
+import type { Order, Cake } from "../types/types";
 import { STATUS_OPTIONS } from "../types/types";
 import { useNavigate } from "react-router-dom";
 import { formatDateJP } from "../utils/formatDateJP";
@@ -23,16 +23,6 @@ interface StatusDayCountsType {
   };
 }
 
-interface Cake {
-  id: number;
-  name: string;
-  sizes: Array<{
-    size: string;
-    price: number;
-    stock: number;
-  }>;
-}
-
 export default function SalesOrder() {
   const [summary, setSummary] = useState<SummaryType>({});
   const [dates, setDates] = useState<string[]>([]);
@@ -40,7 +30,7 @@ export default function SalesOrder() {
   const [error, setError] = useState<string | null>(null);
   const [statusDayCounts, setStatusDayCounts] = useState<StatusDayCountsType>({});
   const [orders, setOrders] = useState<Order[]>([]);
-  const [allCakes, setAllCakes] = useState<Cake[]>([]); // 🔹 NOVO: Lista de todos os bolos
+  const [allCakes, setAllCakes] = useState<Cake[]>([]);
 
   const navigate = useNavigate();
   const statusOptions = STATUS_OPTIONS;
@@ -144,10 +134,14 @@ export default function SalesOrder() {
           if (!grouped[cakeName]) {
             grouped[cakeName] = {};
           }
+
+          // 🔥 CORREÇÃO: Ordenar tamanhos pelo ID antes de processar
+          // Usando o id do SizeOption que vem do seu types.ts
+          const sortedSizes = cake.sizes.sort((a, b) => (a.id || 0) - (b.id || 0));
           
           // Garantir que todos os tamanhos do bolo apareçam
-          cake.sizes.forEach(sizeInfo => {
-            const size = sizeInfo.size.trim();
+          sortedSizes.forEach(sizeInfo => {
+            const size = sizeInfo.size?.trim() || '';
             
             if (!grouped[cakeName][size]) {
               grouped[cakeName][size] = {
@@ -275,18 +269,37 @@ export default function SalesOrder() {
         const cakeName = cake.name.trim();
         const sizes = summary[cakeName] || {};
         
+        // 🔥 CORREÇÃO: Criar um mapa de tamanhos com seus IDs
+        const sizeIdMap = new Map<string, number>();
+        cake.sizes.forEach(sizeInfo => {
+          if (sizeInfo.size) {
+            sizeIdMap.set(sizeInfo.size.trim(), sizeInfo.id || 0);
+          }
+        });
+
         // Se não há dados para este bolo, criar estrutura vazia baseada nos sizes do bolo
         const displaySizes = Object.keys(sizes).length > 0 ? sizes : 
-          cake.sizes.reduce((acc, sizeInfo) => {
-            acc[sizeInfo.size] = {
-              stock: sizeInfo.stock,
-              days: dates.reduce((daysAcc, date) => {
-                daysAcc[date] = 0;
-                return daysAcc;
-              }, {} as Record<string, number>)
-            };
-            return acc;
-          }, {} as SummaryType[string]);
+          cake.sizes
+            .sort((a, b) => (a.id || 0) - (b.id || 0)) // 🔹 Ordenar pelo ID
+            .reduce((acc, sizeInfo) => {
+              if (sizeInfo.size) {
+                acc[sizeInfo.size] = {
+                  stock: sizeInfo.stock,
+                  days: dates.reduce((daysAcc, date) => {
+                    daysAcc[date] = 0;
+                    return daysAcc;
+                  }, {} as Record<string, number>)
+                };
+              }
+              return acc;
+            }, {} as SummaryType[string]);
+        
+        // 🔥 CORREÇÃO: Ordenar os tamanhos pelo ID
+        const sortedDisplaySizes = Object.entries(displaySizes).sort(([sizeA], [sizeB]) => {
+          const idA = sizeIdMap.get(sizeA) || 9999;
+          const idB = sizeIdMap.get(sizeB) || 9999;
+          return idA - idB;
+        });
 
         // Total por dia desse bolo
         const totalPorDia: Record<string, number> = dates.reduce((acc: Record<string, number>, date) => {
@@ -314,7 +327,7 @@ export default function SalesOrder() {
                   </tr>
                 </thead>
                 <tbody>
-                  {Object.entries(displaySizes).map(([size, sizeData]) => {
+                  {sortedDisplaySizes.map(([size, sizeData]) => {
                     const total = dates.reduce((sum, date) => 
                       sum + (sizeData.days[date] || 0), 0
                     );
