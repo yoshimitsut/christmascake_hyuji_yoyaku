@@ -3,7 +3,7 @@ import "./SalesOrder.css";
 import type { Order, Cake } from "../types/types";
 import { STATUS_OPTIONS } from "../types/types";
 import { useNavigate } from "react-router-dom";
-import { formatDateJP } from "../utils/formatDateJP";
+import { formatMonthDayJP } from "../utils/formatDateJP";
 
 // Interfaces para tipagem correta
 interface CakeSizeData {
@@ -246,7 +246,7 @@ export default function SalesOrder() {
               <tr>
                 <th>日付毎の合計</th>
                 {dates.map((date) => (
-                  <th key={date}>{formatDateJP(date)}</th>
+                  <th key={date}>{formatMonthDayJP(date)}</th>
                 ))}
                 <th>合計</th>
               </tr>
@@ -321,7 +321,7 @@ export default function SalesOrder() {
                   <tr>
                     <th>{cakeName}</th>
                     {dates.map((date) => (
-                      <th key={date}>{formatDateJP(date)}</th>
+                      <th key={date}>{formatMonthDayJP(date)}</th>
                     ))}
                     <th>合計</th>
                   </tr>
@@ -367,7 +367,7 @@ export default function SalesOrder() {
             <tr>
               <th>支払い状況</th>
               {dates.map((date) => (
-                <th key={date}>{formatDateJP(date)}</th>
+                <th key={date}>{formatMonthDayJP(date)}</th>
               ))}
               <th>合計(件数)</th>
               <th>合計(金額)</th>
