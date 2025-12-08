@@ -145,7 +145,17 @@ const allowedDates = [
     });
   };
 
-  const cakeOptions = cakesData.map(c => ({ value: String(c.id), label: c.name }));
+  const cakeOptions = cakesData.map(c => {
+    const hasStock = c.sizes.some(size => size.stock > 0);
+
+    return {
+      value: String(c.id),
+      label: hasStock ?
+        c.name
+        : `${c.name} (在庫なし)`,
+        isDisabled: !hasStock
+    };
+  });
 
   const handleSave = async () => {
     setIsSaving(true); // desativa o botão imediatamente
@@ -178,7 +188,7 @@ const allowedDates = [
   // };
   
 
-  type OptionType = { value: string; label: string };
+  type OptionType = { value: string; label: string; isDisabled: boolean; };
 
   const customStyles: StylesConfig<OptionType, false, GroupBase<OptionType>> = {
     control: (base: CSSObjectWithLabel) => ({
@@ -317,6 +327,7 @@ const allowedDates = [
                       <Select<OptionType, false, GroupBase<OptionType>>
                         styles={customStyles}
                         options={cakeOptions}
+                        isOptionDisabled={(option) => !!option.isDisabled}
                         value={cakeOptions.find(opt => String(opt.value) === String(cake.cake_id))}
                         onChange={(val: SingleValue<OptionType>) => {
                           if (val) {
