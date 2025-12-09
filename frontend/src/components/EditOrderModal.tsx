@@ -188,7 +188,7 @@ const allowedDates = [
   // };
   
 
-  type OptionType = { value: string; label: string; isDisabled: boolean; };
+  type OptionType = { value: string; label: string; isDisabled?: boolean; };
 
   const customStyles: StylesConfig<OptionType, false, GroupBase<OptionType>> = {
     control: (base: CSSObjectWithLabel) => ({
@@ -371,7 +371,7 @@ const allowedDates = [
                         isOptionDisabled={(option) => !!option.isDisabled}
                         formatOptionLabel={(option) =>
                           !option.isDisabled
-                            ? `${option.size} ￥${option.price.toLocaleString()} （${(option.price + option.price * 0.08).toLocaleString("ja-JP")}税込）`
+                            ? `${option.size} ￥${option.price.toLocaleString()} 税込`
                             : (
                               <span>
                                 {option.size} ￥{option.price.toLocaleString()}
