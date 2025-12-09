@@ -178,13 +178,13 @@ ul {
 /* LARGURAS FIXAS PARA CADA COLUNA - TOTALIZANDO MAIS DE 100% PARA FORÇAR SCROLL */
 .list-order-table th.situation-cell,
 .list-order-table td.situation-cell {
-  width: 150px; /* Largura fixa */
-  min-width: 150px;
+  width: 165px; /* Largura fixa */
+  min-width: 165px;
 }
 
 .id-cell {
   width: 100px !important; /* Largura fixa */
-  min-width: 100px;
+  min-width: 50px;
 }
 
 .name-cell {
@@ -199,17 +199,17 @@ ul {
 
 .cake-cell {
   width: 250px; /* Largura fixa - mais espaço para os bolos */
-  min-width: 250px;
+  min-width: 257px;
 }
 
 .quantity-cell {
   width: 80px; /* Largura fixa */
-  min-width: 80px;
+  min-width: 44px;
 }
 
 .tel-cell {
   width: 150px; /* Largura fixa */
-  min-width: 150px;
+  min-width: 105px;
 }
 
 .email-cell {
@@ -219,7 +219,7 @@ ul {
 
 .edit-cell {
   width: 100px; /* Largura fixa */
-  min-width: 100px;
+  min-width: 58px;
   text-align: center;
 }
 
